@@ -43,9 +43,10 @@ def get_sql_query(engine, natural_query):
         chain = create_sql_query_chain(llm, db) #cria a cadeia de consulta SQL
 
         #prompt para gerar a consulta SQL
-        prompt = f"""Dada a pergunta do usuário, gere uma consulta SQL.
+        prompt = f"""Você é um assistente de IA especialista em converter perguntas em linguagem natural para consultas SQL 
+        para um banco de dados. Dada a pergunta, gere uma consulta em SQL.
         Pergunta: {natural_query}
-        Instrução Adicional: A menos que o usuário peça explicitamente um número de resultados (ex: 'top 5' ou 'limite 10'),
+        Instrução adicional: A menos que o usuário peça explicitamente um número de resultados (ex: 'top 5' ou 'limite 5'), 
         a consulta SQL gerada NÃO DEVE incluir uma cláusula LIMIT. Retorne todos os resultados.
         """
         sql_query = chain.invoke({"question": prompt}) 
@@ -108,7 +109,7 @@ else:
                 sql_query = get_sql_query(st.session_state.engine, natural_query)
 
                 if sql_query:
-                    st.code(sql_query, language='sql')
+                    st.code(sql_query, language="sql")
 
                     # Executa a consulta SQL e obtém os resultados
                     st.subheader("2. Resultados da Consulta")
